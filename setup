@@ -1,12 +1,24 @@
 #!/usr/bin/env sh
 
-# Setup the custom scripts
+# Setup script to create symlinks for custom scripts
+# Usage: ./setup [target_directory]
+# Default target_directory is $HOME/.local/bin
 
-mkdir -p $HOME/.local/bin
+set -e
 
-ln -sf $PWD/gpt $HOME/.local/bin/gpt
-ln -sf $PWD/bfu/bin/ff $HOME/.local/bin/ff
-ln -sf $PWD/fs $HOME/.local/bin/fs
+TARGET_DIR="${1:-$HOME/.local/bin}"
 
-ln -sf $PWD/gdc $HOME/.local/bin/gdc
-ln -sf $PWD/pie $HOME/.local/bin/pie
+echo "Setting up symlinks in: $TARGET_DIR"
+mkdir -p "$TARGET_DIR"
+
+# List of scripts and their relative paths
+SCRIPTS="ff/ff fs/fs gdc/gdc gf/gf gpt/gpt pie/pie rf/rf"
+
+for script in $SCRIPTS; do
+    name=$(basename "$script")
+    chmod +x "$script"
+    ln -sf "$(pwd)/$script" "$TARGET_DIR/$name"
+    echo "Linked $script -> $TARGET_DIR/$name"
+done
+
+echo "All symlinks created."
