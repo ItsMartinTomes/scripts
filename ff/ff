@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# Returns 0 if the command is in the PATH, non-zero otherwise
+_have() { type "$1" &>/dev/null }
+
+if ! _have fd; then
+    echo "Error: fd is not installed or not in PATH." >&2
+    exit 1
+fi
+
+if ! _have fzf; then
+    echo "Error: fzf is not installed or not in PATH." >&2
+    exit 1
+fi
+
+if ! _have bat; then
+    echo "Error: bat is not installed or not in PATH." >&2
+    exit 1
+fi
+
+if ! _have vim; then
+    echo "Error: vim is not installed or not in PATH." >&2
+    exit 1
+fi
+
+# Set the default directory to the current directory (.)
+DIR="."
+# If a directory argument is provided, use it instead
+if [$# -eg 1]; then
+	DIR="$1"
+	echo "$DIR"
+fi
+
